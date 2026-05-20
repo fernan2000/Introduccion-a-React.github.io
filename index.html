@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Clase 1 — Proyectos React</title>
+  <title>Mis Proyectos React</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,8 +27,8 @@
       background: radial-gradient(circle, rgba(123,97,255,0.12) 0%, transparent 70%);
       pointer-events: none;
     }
-    .wrapper { position: relative; z-index: 1; width: 100%; max-width: 700px; }
-    header { text-align: center; margin-bottom: 3.5rem; animation: fadeDown 0.6s ease both; }
+    .wrapper { position: relative; z-index: 1; width: 100%; max-width: 750px; }
+    header { text-align: center; margin-bottom: 3rem; animation: fadeDown 0.6s ease both; }
     .badge {
       display: inline-block; font-family: 'Space Mono', monospace; font-size: 0.7rem;
       letter-spacing: 0.2em; color: var(--accent2); border: 1px solid var(--accent2);
@@ -37,34 +37,38 @@
     h1 { font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; }
     h1 span { background: linear-gradient(135deg, var(--accent1), var(--accent2)); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .subtitle { margin-top: 0.8rem; color: var(--muted); font-size: 0.95rem; font-family: 'Space Mono', monospace; }
-    .projects { display: grid; gap: 1.2rem; }
+    .clase-section { margin-bottom: 2.5rem; animation: fadeUp 0.6s ease both; }
+    .clase-label {
+      font-family: 'Space Mono', monospace; font-size: 0.72rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--accent1); margin-bottom: 0.8rem;
+      padding-left: 0.2rem; display: flex; align-items: center; gap: 0.6rem;
+    }
+    .clase-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .projects { display: grid; gap: 0.9rem; }
     .card {
       display: flex; align-items: center; gap: 1.5rem; background: var(--surface);
-      border: 1px solid var(--border); border-radius: 16px; padding: 1.6rem 2rem;
+      border: 1px solid var(--border); border-radius: 14px; padding: 1.3rem 1.8rem;
       text-decoration: none; color: inherit; position: relative; overflow: hidden;
       transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
-      animation: fadeUp 0.6s ease both;
     }
-    .card:nth-child(1) { animation-delay: 0.1s; }
-    .card:nth-child(2) { animation-delay: 0.22s; }
     .card::before {
       content: ''; position: absolute; inset: 0;
       background: linear-gradient(135deg, rgba(123,97,255,0.06), rgba(0,229,192,0.04));
       opacity: 0; transition: opacity 0.3s;
     }
-    .card:hover { border-color: var(--accent1); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(123,97,255,0.2); }
+    .card:hover { border-color: var(--accent1); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(123,97,255,0.18); }
     .card:hover::before { opacity: 1; }
     .icon {
-      flex-shrink: 0; width: 52px; height: 52px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
+      flex-shrink: 0; width: 46px; height: 46px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
       background: var(--bg); border: 1px solid var(--border);
     }
     .info { flex: 1; }
-    .info h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem; }
-    .info p { font-size: 0.82rem; color: var(--muted); font-family: 'Space Mono', monospace; }
-    .arrow { flex-shrink: 0; color: var(--accent1); font-size: 1.3rem; opacity: 0; transform: translateX(-6px); transition: opacity 0.25s, transform 0.25s; }
+    .info h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .info p { font-size: 0.78rem; color: var(--muted); font-family: 'Space Mono', monospace; }
+    .arrow { flex-shrink: 0; color: var(--accent1); font-size: 1.2rem; opacity: 0; transform: translateX(-6px); transition: opacity 0.25s, transform 0.25s; }
     .card:hover .arrow { opacity: 1; transform: translateX(0); }
-    footer { text-align: center; margin-top: 3rem; font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--muted); animation: fadeUp 0.6s 0.4s ease both; }
+    footer { text-align: center; margin-top: 2rem; font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--muted); }
     @keyframes fadeDown { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
   </style>
@@ -72,29 +76,34 @@
 <body>
   <div class="wrapper">
     <header>
-      <div class="badge">Clase 1 · React</div>
+      <div class="badge">Curso React</div>
       <h1>Mis <span>Proyectos</span></h1>
       <p class="subtitle">// Selecciona un proyecto para verlo</p>
     </header>
-    <div class="projects">
-      <a class="card" href="./clase-1/padre_hijo/dist/index.html">
-        <div class="icon">🔗</div>
-        <div class="info">
-          <h2>Padre &amp; Hijo</h2>
-          <p>./padre_hijo &nbsp;·&nbsp; Comunicación entre componentes</p>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-      <a class="card" href="./clase-1/tarjeta/dist/index.html">
-        <div class="icon">🪪</div>
-        <div class="info">
-          <h2>Tarjeta</h2>
-          <p>./tarjeta &nbsp;·&nbsp; Componente de tarjeta en React</p>
-        </div>
-        <span class="arrow">→</span>
-      </a>
+
+    <div class="clase-section">
+      <div class="clase-label">Clase 1</div>
+      <div class="projects">
+        <a class="card" href="https://fernan2000.github.io/Introduccion-a-React.github.io/clase-1/padre_hijo/dist/index.html">
+          <div class="icon">🔗</div>
+          <div class="info">
+            <h2>Padre &amp; Hijo</h2>
+            <p>clase-1/padre_hijo &nbsp;·&nbsp; Comunicación entre componentes</p>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+        <a class="card" href="https://fernan2000.github.io/Introduccion-a-React.github.io/clase-1/tarjeta/dist/index.html">
+          <div class="icon">🪪</div>
+          <div class="info">
+            <h2>Tarjeta</h2>
+            <p>clase-1/tarjeta &nbsp;·&nbsp; Componente de tarjeta en React</p>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+      </div>
     </div>
-    <footer>Repositorio en GitHub Pages &nbsp;·&nbsp; No requiere clonar ni instalar</footer>
+
+
   </div>
 </body>
 </html>
