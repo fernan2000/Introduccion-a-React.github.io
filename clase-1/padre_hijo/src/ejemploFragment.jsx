@@ -1,17 +1,15 @@
 import { Fragment } from 'react'
 
-// Forma 1: Usando Fragment explícitamente
 function EjemploFragment() {
   return (
     <Fragment>
       <h1>Algo</h1>
       <h2>Otra cosa</h2>
-      <p>Este es un fragmento explícito con Fragment</p>
+      <p>Este es un fragmento explicito con Fragment</p>
     </Fragment>
   )
 }
 
-// Forma 2: Usando sintaxis abreviada (<> </>)
 function EjemploFragmentAlt() {
   return (
     <>
@@ -22,7 +20,6 @@ function EjemploFragmentAlt() {
   )
 }
 
-// Forma 3: Fragment con key para listas
 function EjemploFragmentConKey({ items }) {
   return (
     <>

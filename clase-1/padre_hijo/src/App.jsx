@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { EjemploFragment, EjemploFragmentAlt, EjemploFragmentConKey } from './EjemploFragment'
+import { EjemploFragment, EjemploFragmentAlt, EjemploFragmentConKey } from './ejemploFragment'
 import Nombre from './nombre.jsx'
-import NombreProps from './NombreProps'
-import NombreState from './NombreState'
-import Hijo from './Hijo'
+import NombreProps from './nombreprops.jsx'
+import NombreState from './nombrestate.jsx'
+import Hijo from './hijo.jsx'
 import './App.css'
 
 function App() {
@@ -24,7 +24,7 @@ function App() {
     <div className="container">
       <h1>📚 Práctica Completa de React</h1>
       
-      {/* SECCIÓN 1: FRAGMENTOS */}
+      {/*  FRAGMENTOS */}
       <section className="section">
         <h2>🎯 1. Fragmentos en React</h2>
         <div className="card">
@@ -41,7 +41,7 @@ function App() {
         </div>
       </section>
 
-      {/* SECCIÓN 2: COMPONENTES BÁSICOS */}
+      {/* COMPONENTES BÁSICOS */}
       <section className="section">
         <h2>🎯 2. Componentes Básicos</h2>
         <div className="card">
@@ -51,7 +51,7 @@ function App() {
         </div>
       </section>
 
-      {/* SECCIÓN 3: PROPS AVANZADAS */}
+      {/* PROPS AVANZADAS */}
       <section className="section">
         <h2>🎯 3. Props Avanzadas</h2>
         <div className="card">
@@ -74,7 +74,7 @@ function App() {
         </div>
       </section>
 
-      {/* SECCIÓN 4: STATE */}
+      {/* STATE */}
       <section className="section">
         <h2>🎯 4. useState</h2>
         <div className="card">
@@ -82,7 +82,7 @@ function App() {
         </div>
       </section>
 
-      {/* SECCIÓN 5: PADRE - HIJO */}
+      {/*  PADRE - HIJO */}
       <section className="section">
         <h2>🎯 5. Comunicación Padre → Hijo</h2>
         <div className="card">
