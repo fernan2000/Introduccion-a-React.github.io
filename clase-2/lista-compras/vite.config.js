@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/Introduccion-a-React.github.io/',
+  base: '/Introduccion-a-React.github.io/clase-2/lista-compras/dist/',
 })
