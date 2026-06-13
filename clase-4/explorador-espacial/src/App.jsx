@@ -3,16 +3,14 @@ import Planeta from "./Planeta";
 import "./App.css";
 
 const STORAGE_KEY = "bitacora-planetas";
-
-// ── Estado inicial del formulario ─────────────────────────────────────────────
 const FORM_VACIO = { nombre: "", descripcion: "", imagen: null };
 
 function App() {
-  // ── Estados del panel de control ─────────────────────────────────────────
-  const [distancia,       setDistancia]       = useState(0);
-  const [combustible,     setCombustible]     = useState(100);
-  const [estadoNave,      setEstadoNave]      = useState("En órbita");
-  const [vueloActivo,     setVueloActivo]     = useState(true);
+  // ── Estados del panel de control ─────────────────
+  const [distancia,    setDistancia]    = useState(0);
+  const [combustible,  setCombustible]  = useState(100);
+  const [estadoNave,   setEstadoNave]   = useState("En órbita");
+  const [vueloActivo,  setVueloActivo]  = useState(false); // inicia apagado
 
   // ── Estados de la bitácora ────────────────────────────────────────────────
   const [planetas, setPlanetas] = useState(() => {
@@ -22,54 +20,65 @@ function App() {
     } catch { return []; }
   });
 
-  const [form,       setForm]       = useState(FORM_VACIO);
-  const [editandoIdx, setEditandoIdx] = useState(null); // null = agregar | número = editar
-  const inputImagenRef = useRef(null); // useRef para limpiar el input file
+  const [form,        setForm]        = useState(FORM_VACIO);
+  const [editandoIdx, setEditandoIdx] = useState(null);
+  const inputImagenRef = useRef(null);
 
-  // ── useEffect 1: MONTAJE — inicia simulación de vuelo ────────────────────
+  // ── useEffect 1: MONTAJE — mensaje de bienvenida ──────────────────────────
   useEffect(() => {
-    console.log("🚀 ¡El panel de control está listo!"); // Montaje
+    console.log("🚀 ¡El panel de control está listo!");
+    return () => {
+      console.log("🔴 El panel de control se ha apagado.");
+    };
+  }, []);
+
+  // ── useEffect 2: controla el intervalo según vueloActivo ─────────────────
+  useEffect(() => {
+    if (!vueloActivo) return; // no hace nada si el vuelo está detenido
 
     const intervalo = setInterval(() => {
       setCombustible((prev) => {
-        if (prev <= 0) { clearInterval(intervalo); return 0; }
+        if (prev <= 0) { clearInterval(intervalo); setVueloActivo(false); return 0; }
         return parseFloat((prev - 0.5).toFixed(1));
       });
       setDistancia((prev) => parseFloat((prev + 10).toFixed(0)));
     }, 1000);
 
-    // DESMONTAJE — limpia el intervalo cuando el componente se destruye
-    return () => {
-      clearInterval(intervalo);
-      console.log("🔴 El panel de control se ha apagado."); // Desmontaje
-    };
-  }, []); // [] = solo al montar
+    return () => clearInterval(intervalo); // limpia al pausar o desmontar
+  }, [vueloActivo]);
 
-  // ── useEffect 2: ACTUALIZACIÓN — reacciona al cambio de combustible ──────
+  // ── useEffect 3: reacciona al cambio de combustible ──────────────────────
   useEffect(() => {
-    console.log(`⛽ ¡Combustible actualizado! ${combustible}%`); // Actualización
+    console.log(`⛽ ¡Combustible actualizado! ${combustible}%`);
     if (combustible <= 0) setEstadoNave("Sin combustible");
-  }, [combustible]); // se ejecuta cada vez que combustible cambia
+  }, [combustible]);
 
-  // ── useEffect 3: guarda planetas en localStorage ──────────────────────────
+  // ── useEffect 4: guarda planetas en localStorage ──────────────────────────
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(planetas));
   }, [planetas]);
 
-  // ── useMemo: mensaje de estado de la nave (se memoriza) ──────────────────
+  // ── useMemo: mensaje de estado ────────────────────────────────────────────
   const mensajeEstado = useMemo(() => {
-    if (estadoNave === "En órbita")        return "🛸 En órbita — todo nominal";
-    if (estadoNave === "Aterrizando")      return "🪐 Aterrizando en el planeta...";
-    if (estadoNave === "Sin combustible")  return "⚠️ Sin combustible — detenida";
+    if (!vueloActivo && estadoNave === "En órbita") return "⏸️ Nave en espera";
+    if (estadoNave === "En órbita")               return "🛸 En órbita — todo nominal";
+    if (estadoNave === "Aterrizando")             return "🪐 Aterrizando...";
+    if (estadoNave === "Sin combustible")         return "⚠️ Sin combustible";
     return `🔧 ${estadoNave}`;
-  }, [estadoNave]);
+  }, [estadoNave, vueloActivo]);
 
-  // ── useMemo: nivel de combustible en color ────────────────────────────────
+  // ── useMemo: color de combustible ─────────────────────────────────────────
   const colorCombustible = useMemo(() => {
     if (combustible > 60) return "#22c55e";
     if (combustible > 30) return "#f59e0b";
     return "#ef4444";
   }, [combustible]);
+
+  // ── Iniciar vuelo ─────────────────────────────────────────────────────────
+  const iniciarVuelo = () => {
+    setEstadoNave("En órbita");
+    setVueloActivo(true);
+  };
 
   // ── Aterrizar ─────────────────────────────────────────────────────────────
   const aterrizar = () => {
@@ -77,12 +86,11 @@ function App() {
     setVueloActivo(false);
   };
 
-  // ── Formulario: actualizar campo ──────────────────────────────────────────
+  // ── Formulario ────────────────────────────────────────────────────────────
   const actualizarForm = (campo, valor) => {
     setForm((prev) => ({ ...prev, [campo]: valor }));
   };
 
-  // ── Guardar planeta (agregar o editar) ────────────────────────────────────
   const guardarPlaneta = (e) => {
     e.preventDefault();
     if (!form.nombre.trim() || !form.descripcion.trim()) return;
@@ -94,13 +102,9 @@ function App() {
     };
 
     if (editandoIdx !== null) {
-      // Modo edición
-      setPlanetas((prev) =>
-        prev.map((p, i) => (i === editandoIdx ? planetaData : p))
-      );
+      setPlanetas((prev) => prev.map((p, i) => i === editandoIdx ? planetaData : p));
       setEditandoIdx(null);
     } else {
-      // Modo agregar
       setPlanetas((prev) => [...prev, planetaData]);
     }
 
@@ -108,20 +112,17 @@ function App() {
     if (inputImagenRef.current) inputImagenRef.current.value = "";
   };
 
-  // ── Iniciar edición ───────────────────────────────────────────────────────
   const iniciarEdicion = (planeta, index) => {
     setEditandoIdx(index);
     setForm({ nombre: planeta.nombre, descripcion: planeta.descripcion, imagen: planeta.imagen });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // ── Eliminar planeta ──────────────────────────────────────────────────────
   const eliminarPlaneta = (index) => {
     setPlanetas((prev) => prev.filter((_, i) => i !== index));
     if (editandoIdx === index) { setEditandoIdx(null); setForm(FORM_VACIO); }
   };
 
-  // ── Manejar imagen ────────────────────────────────────────────────────────
   const manejarImagen = (e) => {
     const archivo = e.target.files[0];
     if (!archivo) return;
@@ -135,14 +136,14 @@ function App() {
     <div className="app">
       <div className="card">
 
-        {/* ── Header ── */}
+        {/* Header */}
         <div className="header">
           <span className="header-icono">🚀</span>
           <h1>Panel de Control</h1>
           <span className="nave-estado">{mensajeEstado}</span>
         </div>
 
-        {/* ── Panel de vuelo ── */}
+        {/* Panel de vuelo */}
         <div className="panel-vuelo">
           <div className="panel-dato">
             <span className="panel-valor">{distancia.toLocaleString()}</span>
@@ -170,23 +171,30 @@ function App() {
           />
         </div>
 
-        {/* Botón aterrizar */}
-        {vueloActivo && combustible > 0 && (
-          <button className="btn-aterrizar" onClick={aterrizar}>
-            🪐 Aterrizar y registrar planeta
-          </button>
-        )}
+        {/* Botones de control */}
+        <div className="fila-controles">
+          {/* Iniciar vuelo */}
+          {!vueloActivo && combustible > 0 && estadoNave !== "Aterrizando" && (
+            <button className="btn-iniciar" onClick={iniciarVuelo}>
+              🚀 Iniciar vuelo
+            </button>
+          )}
 
-        {/* ── Bitácora: formulario ── */}
-        <div className="seccion-titulo">
-          📓 Bitácora de Exploración
+          {/* Aterrizar */}
+          {vueloActivo && combustible > 0 && (
+            <button className="btn-aterrizar" onClick={aterrizar}>
+              🪐 Aterrizar y registrar planeta
+            </button>
+          )}
         </div>
+
+        {/* Bitácora */}
+        <div className="seccion-titulo">📓 Bitácora de Exploración</div>
 
         <div className="formulario">
           <p className="formulario-titulo">
             {editandoIdx !== null ? "✏️ Editando planeta" : "➕ Registrar planeta"}
           </p>
-
           <input
             className="input-texto"
             type="text"
@@ -213,7 +221,6 @@ function App() {
               className="input-file"
             />
           </label>
-
           <div className="fila-botones">
             <button className="btn-agregar" onClick={guardarPlaneta}>
               {editandoIdx !== null ? "💾 Guardar cambios" : "+ Registrar"}
@@ -226,13 +233,12 @@ function App() {
           </div>
         </div>
 
-        {/* ── Lista de planetas ── */}
         {planetas.length === 0 ? (
           <div className="lista-vacia">
             <span className="icono-vacio">🌌</span>
             No hay planetas registrados.
             <br />
-            ¡Aterriza y empieza a explorar!
+            ¡Inicia el vuelo, aterriza y empieza a explorar!
           </div>
         ) : (
           <ul className="lista-planetas">
