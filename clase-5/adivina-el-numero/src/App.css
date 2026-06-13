@@ -66,7 +66,11 @@ body {
   transition: width 0.4s ease, background 0.4s ease;
 }
 
-/* ─── Input ────────────────────────────────────────────────────────────────── */
+
+
+
+
+
 .input-row { display: flex; gap: 8px; }
 
 .input-numero {
@@ -104,7 +108,6 @@ body {
 .btn-adivinar:hover:not(:disabled) { background: #4338ca; transform: translateY(-1px); }
 .btn-adivinar:disabled { background: #c4c4e0; cursor: not-allowed; }
 
-/* ─── Mensaje ──────────────────────────────────────────────────────────────── */
 .mensaje {
   display: flex;
   flex-direction: column;
@@ -128,7 +131,6 @@ body {
 .mensaje-correcto { background: #dcfce7; border: 1px solid #bbf7d0; }
 .mensaje-pista    { background: #f8f8ff; border: 1px solid #ebebf5; }
 
-/* ─── Banner ganaste ───────────────────────────────────────────────────────── */
 .ganaste-banner {
   text-align: center;
   padding: 1rem;
@@ -139,7 +141,6 @@ body {
   color: #1a1a2e;
 }
 
-/* ─── Restart ──────────────────────────────────────────────────────────────── */
 .btn-restart {
   width: 100%;
   padding: 12px;
@@ -155,7 +156,6 @@ body {
 
 .btn-restart:hover { opacity: 0.9; transform: translateY(-1px); }
 
-/* ─── Historial ────────────────────────────────────────────────────────────── */
 .historial {
   border-top: 1px solid #ebebf5;
   padding-top: 1rem;
@@ -186,7 +186,6 @@ body {
 .historial-item.bajo    { background: #e0f2fe; color: #0284c7; }
 .historial-item.alto    { background: #fee2e2; color: #dc2626; }
 
-/* ─── Responsive ───────────────────────────────────────────────────────────── */
 @media (max-width: 480px) {
   .game { padding: 1.25rem; }
   .game-header h1 { font-size: 20px; }
