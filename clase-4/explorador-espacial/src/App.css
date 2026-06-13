@@ -1,0 +1,325 @@
+/* ─── Reset ────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #0a0a1a;
+  min-height: 100vh;
+}
+
+/* ─── Layout ───────────────────────────────────────────────────────────────── */
+.app {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.card {
+  background: #13131f;
+  border: 1px solid #2a2a4a;
+  border-radius: 20px;
+  box-shadow: 0 4px 40px rgba(123, 97, 255, 0.15);
+  padding: 2rem;
+  width: 100%;
+  max-width: 560px;
+}
+
+/* ─── Header ───────────────────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.header-icono { font-size: 26px; }
+
+.header h1 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #e8e8f0;
+}
+
+.nave-estado {
+  margin-left: auto;
+  font-size: 12px;
+  color: #a0a0c0;
+  background: #1e1e35;
+  border: 1px solid #2a2a4a;
+  border-radius: 99px;
+  padding: 4px 12px;
+}
+
+/* ─── Panel de vuelo ───────────────────────────────────────────────────────── */
+.panel-vuelo {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #1e1e35;
+  border: 1px solid #2a2a4a;
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.panel-dato {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.panel-valor {
+  font-size: 24px;
+  font-weight: 700;
+  color: #e8e8f0;
+  transition: color 0.5s;
+}
+
+.panel-label {
+  font-size: 11px;
+  color: #6b6b8a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.panel-divider {
+  width: 1px;
+  height: 40px;
+  background: #2a2a4a;
+}
+
+/* ─── Barra combustible ────────────────────────────────────────────────────── */
+.barra-wrap {
+  height: 6px;
+  background: #2a2a4a;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+}
+
+.barra-combustible {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 1s linear, background 0.5s;
+}
+
+/* ─── Botón aterrizar ──────────────────────────────────────────────────────── */
+.btn-aterrizar {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #7b61ff, #00e5c0);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-aterrizar:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* ─── Sección título ───────────────────────────────────────────────────────── */
+.seccion-titulo {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7b61ff;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.seccion-titulo::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #2a2a4a;
+}
+
+/* ─── Formulario ───────────────────────────────────────────────────────────── */
+.formulario {
+  background: #1e1e35;
+  border: 1px solid #2a2a4a;
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.formulario-titulo {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b6b8a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.input-texto,
+.input-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #2a2a4a;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  color: #e8e8f0;
+  background: #13131f;
+  transition: border-color 0.2s;
+  resize: none;
+  font-family: inherit;
+}
+
+.input-texto:focus,
+.input-textarea:focus { border-color: #7b61ff; }
+
+.label-imagen {
+  font-size: 13px;
+  color: #6b6b8a;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.input-file {
+  font-size: 13px;
+  color: #a0a0c0;
+  background: #13131f;
+  border: 1.5px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.fila-botones {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-agregar {
+  flex: 1;
+  padding: 10px 18px;
+  background: #7b61ff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-agregar:hover { background: #6d54e8; }
+
+.btn-cancelar {
+  padding: 10px 16px;
+  background: transparent;
+  color: #6b6b8a;
+  border: 1.5px solid #2a2a4a;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-cancelar:hover { background: #1e1e35; }
+
+/* ─── Lista vacía ──────────────────────────────────────────────────────────── */
+.lista-vacia {
+  text-align: center;
+  color: #6b6b8a;
+  padding: 2.5rem 0;
+  font-size: 15px;
+}
+
+.icono-vacio {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* ─── Lista de planetas ────────────────────────────────────────────────────── */
+.lista-planetas {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.planeta-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #1e1e35;
+  border: 1px solid #2a2a4a;
+  border-radius: 12px;
+  padding: 12px;
+  transition: border-color 0.2s;
+}
+
+.planeta-card:hover { border-color: #7b61ff; }
+
+.planeta-img {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #2a2a4a;
+}
+
+.planeta-info { flex: 1; min-width: 0; }
+
+.planeta-nombre {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e8e8f0;
+  margin-bottom: 4px;
+}
+
+.planeta-desc {
+  font-size: 12px;
+  color: #6b6b8a;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.planeta-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.btn-editar,
+.btn-del {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.btn-editar:hover { background: #2a2a4a; }
+.btn-del:hover    { background: #2a2a4a; }
+
+/* ─── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .card { padding: 1.25rem; }
+  .panel-valor { font-size: 18px; }
+  .nave-estado { font-size: 11px; }
+}
