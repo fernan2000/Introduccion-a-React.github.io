@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🐦 Twitter Clone - Clase 8</title>
+  <style>
+
+* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      color: #e8e8f0;
+    }
+
+    #root {
+      min-height: 100vh;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+
+
+    .navbar {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.8rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1da1f2;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      color: #a0a0b8;
+      text-decoration: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      transition: all 0.3s;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .nav-link:hover {
+      color: #e8e8f0;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-login {
+      color: white;
+      background: #1da1f2;
+      padding: 0.4rem 1.2rem;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .btn-login:hover {
+      background: #1a8cd8;
+      transform: translateY(-1px);
+    }
+
+    .btn-logout {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      padding: 0.4rem 1.2rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      font-size: 1rem;
+    }
+
+    .btn-logout:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+
+
+    .main-content {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      flex: 1;
+      width: 100%;
+    }
+
+
+    .home-page {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .tweet-area {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .tweet-input-container {
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7b61ff, #1da1f2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .tweet-input {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 0.8rem 1rem;
+      color: #e8e8f0;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s;
+      min-height: 50px;
+      font-family: inherit;
+    }
+
+    .tweet-input:focus {
+      border-color: #1da1f2;
+      box-shadow: 0 0 0 4px rgba(29, 161, 242, 0.1);
+    }
+
+    .tweet-input::placeholder {
+      color: #6b6b80;
+    }
+
+    .btn-tweet {
+      padding: 0.6rem 1.5rem;
+      background: linear-gradient(135deg, #1da1f2, #1a8cd8);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      flex-shrink: 0;
+      height: 50px;
+    }
+
+    .btn-tweet:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(29, 161, 242, 0.3);
+    }
+
+    .btn-tweet:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .login-prompt {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      color: #a0a0b8;
+      margin-bottom: 2rem;
+    }
+
+    .tweets-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+
+
+    .tweet-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 1.2rem 1.5rem;
+      transition: all 0.3s;
+    }
+
+    .tweet-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .tweet-header {
+      display: flex;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .tweet-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7b61ff, #1da1f2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .tweet-author {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tweet-username {
+      font-weight: 600;
+      color: #e8e8f0;
+    }
+
+    .tweet-time {
+      font-size: 0.75rem;
+      color: #6b6b80;
+    }
+
+    .tweet-content {
+      color: #e8e8f0;
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .tweet-actions {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .action-btn {
+      background: none;
+      border: none;
+      color: #6b6b80;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.3s;
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+
+    .action-btn:hover {
+      color: #e8e8f0;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .action-icon {
+      font-size: 1.1rem;
+    }
+
+    .action-count {
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+
+
+    .login-page {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 70vh;
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 2.5rem;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .login-icon {
+      font-size: 3rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-header h1 {
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, #7b61ff, #1da1f2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .login-header p {
+      color: #a0a0b8;
+      font-size: 0.95rem;
+      margin-top: 0.3rem;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #a0a0b8;
+    }
+
+    .form-group input {
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      color: #e8e8f0;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+      border-color: #1da1f2;
+      box-shadow: 0 0 0 4px rgba(29, 161, 242, 0.1);
+    }
+
+    .form-group input.input-error {
+      border-color: #f87171;
+      box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+    }
+
+    .error-message {
+      color: #f87171;
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+    }
+
+    .btn-login-submit {
+      padding: 0.8rem;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1da1f2, #1a8cd8);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-login-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(29, 161, 242, 0.3);
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 1rem;
+      color: #6b6b80;
+      font-size: 0.85rem;
+    }
+
+
+
+    .profile-page {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .profile-header {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
+    }
+
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7b61ff, #1da1f2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: white;
+      margin: 0 auto 1rem;
+    }
+
+    .profile-name {
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, #7b61ff, #1da1f2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .profile-stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin-top: 1rem;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #e8e8f0;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: #6b6b80;
+      text-transform: uppercase;
+    }
+
+    .profile-bio {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .bio-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+
+    .bio-header h3 {
+      color: #a0a0b8;
+      font-size: 0.9rem;
+    }
+
+    .btn-edit {
+      background: rgba(255, 255, 255, 0.06);
+      color: #a0a0b8;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.3rem 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.8rem;
+    }
+
+    .btn-edit:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-save {
+      background: linear-gradient(135deg, #1da1f2, #1a8cd8);
+      color: white;
+      border: none;
+      padding: 0.3rem 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 0.8rem;
+    }
+
+    .btn-save:hover {
+      transform: translateY(-1px);
+    }
+
+    .bio-text {
+      color: #e8e8f0;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .bio-textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      color: #e8e8f0;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s;
+      font-family: inherit;
+      resize: vertical;
+    }
+
+    .bio-textarea:focus {
+      border-color: #1da1f2;
+    }
+
+    .profile-info {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .info-item:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      color: #6b6b80;
+    }
+
+    .info-value {
+      color: #e8e8f0;
+      font-weight: 500;
+    }
+
+    @media (max-width: 480px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .nav-links {
+        justify-content: center;
+      }
+      .tweet-input-container {
+        flex-wrap: wrap;
+      }
+      .btn-tweet {
+        width: 100%;
+      }
+      .profile-stats {
+        gap: 1.5rem;
+      }
+      .login-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script>
+    // ================
+    let tweets = [
+      { id: 1, author: 'juanperez', content: '¡Hola mundo! Este es mi primer tweet 🐦', likes: 5, retweets: 2 },
+      { id: 2, author: 'maria_dev', content: 'Aprendiendo React y me encanta! ❤️', likes: 12, retweets: 4 },
+      { id: 3, author: 'carlos123', content: '¿Alguien más trabajando en un proyecto de React? 🔥', likes: 8, retweets: 3 },
+    ];
+
+    // ============================================================
+    let currentPage = 'home';
+    let user = null;
+    let isEditingBio = false;
+    let bioText = 'Desarrollador React | Amante del código 🚀';
+
+    // Cargar usuario desde localStorage
+    const storedUser = localStorage.getItem('twitter_user');
+    if (storedUser) {
+      user = JSON.parse(storedUser);
+    }
+
+
+
+    function navigateTo(page) {
+      currentPage = page;
+      render();
+    }
+
+
+
+
+    function login() {
+      const input = document.getElementById('usernameInput');
+      const username = input.value.trim();
+      if (username.length < 3) {
+        document.getElementById('errorMsg').textContent = 'El nombre debe tener al menos 3 caracteres';
+        input.classList.add('input-error');
+        return;
+      }
+      user = { username, loginTime: new Date().toISOString() };
+      localStorage.setItem('twitter_user', JSON.stringify(user));
+      currentPage = 'home';
+      render();
+    }
+
+    function logout() {
+      user = null;
+      localStorage.removeItem('twitter_user');
+      currentPage = 'home';
+      render();
+    }
+
+
+
+
+    function addTweet() {
+      const input = document.getElementById('tweetInput');
+      if (input && input.value.trim() && user) {
+        tweets.unshift({
+          id: Date.now(),
+          author: user.username,
+          content: input.value.trim(),
+          likes: 0,
+          retweets: 0
+        });
+        input.value = '';
+        render();
+      }
+    }
+
+    function likeTweet(id) {
+      const tweet = tweets.find(t => t.id === id);
+      if (tweet) {
+        tweet.likes++;
+        render();
+      }
+    }
+
+
+
+    function toggleEditBio() {
+      isEditingBio = !isEditingBio;
+      render();
+    }
+
+    function saveBio() {
+      const textarea = document.getElementById('bioTextarea');
+      if (textarea) {
+        bioText = textarea.value;
+      }
+      isEditingBio = false;
+      render();
+    }
+
+
+
+
+    function render() {
+      const root = document.getElementById('root');
+
+      // Navbar
+      const navbar = `
+        <nav class="navbar">
+          <div class="nav-container">
+            <div class="nav-brand" onclick="navigateTo('home')">🐦 Twitter Clone</div>
+            <div class="nav-links">
+              <button class="nav-link" onclick="navigateTo('home')">Inicio</button>
+              ${user ? `
+                <button class="nav-link" onclick="navigateTo('profile')">Perfil</button>
+                <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+              ` : `
+                <button class="btn-login" onclick="navigateTo('login')">Iniciar Sesión</button>
+              `}
+            </div>
+          </div>
+        </nav>
+      `;
+
+      // Contenido
+      let mainContent = '';
+      if (currentPage === 'home') mainContent = renderHome();
+      else if (currentPage === 'login') mainContent = renderLogin();
+      else if (currentPage === 'profile') mainContent = renderProfile();
+      else mainContent = renderHome();
+
+      root.innerHTML = `
+        <div class="app">
+          ${navbar}
+          <main class="main-content">${mainContent}</main>
+        </div>
+      `;
+    }
+
+
+
+    function renderHome() {
+      const tweetsHTML = tweets.map(tweet => `
+        <div class="tweet-card">
+          <div class="tweet-header">
+            <div class="tweet-avatar">${tweet.author[0].toUpperCase()}</div>
+            <div class="tweet-author">
+              <span class="tweet-username">@${tweet.author}</span>
+              <span class="tweet-time">hace 2h</span>
+            </div>
+          </div>
+          <p class="tweet-content">${tweet.content}</p>
+          <div class="tweet-actions">
+            <button class="action-btn" onclick="likeTweet(${tweet.id})">
+              <span class="action-icon">❤️</span>
+              <span class="action-count">${tweet.likes}</span>
+            </button>
+            <button class="action-btn">
+              <span class="action-icon">🔄</span>
+              <span class="action-count">${tweet.retweets}</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      return `
+        <div class="home-page">
+          ${user ? `
+            <div class="tweet-area">
+              <div class="tweet-input-container">
+                <div class="user-avatar">${user.username[0].toUpperCase()}</div>
+                <input
+                  type="text"
+                  id="tweetInput"
+                  placeholder="¿Qué está pasando?"
+                  class="tweet-input"
+                  onkeydown="if(event.key==='Enter') addTweet()"
+                />
+                <button class="btn-tweet" onclick="addTweet()">Tweet</button>
+              </div>
+            </div>
+          ` : `
+            <div class="login-prompt">
+              <p>🔒 Inicia sesión para publicar tweets</p>
+            </div>
+          `}
+          <div class="tweets-container">${tweetsHTML}</div>
+        </div>
+      `;
+    }
+
+    function renderLogin() {
+      return `
+        <div class="login-page">
+          <div class="login-card">
+            <div class="login-header">
+              <span class="login-icon">🐦</span>
+              <h1>Iniciar Sesión</h1>
+              <p>Entra a tu cuenta de Twitter Clone</p>
+            </div>
+            <form class="login-form" onsubmit="event.preventDefault(); login()">
+              <div class="form-group">
+                <label>Nombre de Usuario</label>
+                <input
+                  type="text"
+                  id="usernameInput"
+                  placeholder="Ej: juanperez"
+                  oninput="this.classList.remove('input-error'); document.getElementById('errorMsg').textContent=''"
+                />
+                <span id="errorMsg" class="error-message"></span>
+              </div>
+              <button type="submit" class="btn-login-submit">
+                Iniciar Sesión
+              </button>
+              <div class="login-footer">
+                <p>💡 Usa cualquier nombre de usuario para probar</p>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderProfile() {
+      if (!user) {
+        navigateTo('home');
+        return '';
+      }
+
+      const tweetsCount = tweets.filter(t => t.author === user.username).length;
+      const followers = 156;
+      const following = 89;
+
+      return `
+        <div class="profile-page">
+          <div class="profile-header">
+            <div class="profile-avatar">${user.username[0].toUpperCase()}</div>
+            <h1 class="profile-name">@${user.username}</h1>
+            <div class="profile-stats">
+              <div class="stat">
+                <span class="stat-number">${tweetsCount}</span>
+                <span class="stat-label">Tweets</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number">${followers}</span>
+                <span class="stat-label">Seguidores</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number">${following}</span>
+                <span class="stat-label">Siguiendo</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-bio">
+            <div class="bio-header">
+              <h3>Biografía</h3>
+              ${!isEditingBio ? `
+                <button class="btn-edit" onclick="toggleEditBio()">✏️ Editar</button>
+              ` : `
+                <button class="btn-save" onclick="saveBio()">💾 Guardar</button>
+              `}
+            </div>
+            ${isEditingBio ? `
+              <textarea id="bioTextarea" class="bio-textarea" rows="3">${bioText}</textarea>
+            ` : `
+              <p class="bio-text">${bioText}</p>
+            `}
+          </div>
+
+          <div class="profile-info">
+            <div class="info-item">
+              <span class="info-label">📅 Miembro desde</span>
+              <span class="info-value">Diciembre 2024</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">🔒 Sesión iniciada</span>
+              <span class="info-value">${new Date(user.loginTime).toLocaleString()}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    render();
+  </script>
+</body>
+</html>
