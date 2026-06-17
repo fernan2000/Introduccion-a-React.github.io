@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🏥 Gestión de Citas Médicas - Clase 7</title>
+  <style>
+
+
+* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .app {
+      max-width: 900px;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 16px 16px 0 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .nav-brand {
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #7b61ff, #00e5c0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: #a0a0b8;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover {
+      color: #e8e8f0;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-links a.active {
+      color: #7b61ff;
+      background: rgba(123, 97, 255, 0.1);
+    }
+
+
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 0 0 16px 16px;
+      min-height: 500px;
+    }
+
+
+    .footer {
+      text-align: center;
+      padding: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      color: #6b6b80;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+    }
+
+
+
+    .home-page {
+      text-align: center;
+    }
+
+    .home-page h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #7b61ff, #00e5c0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: #a0a0b8;
+      margin-bottom: 2rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(123, 97, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #e8e8f0;
+    }
+
+    .feature-card p {
+      color: #a0a0b8;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.6rem 1.5rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #7b61ff, #6a4fff);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(123, 97, 255, 0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      color: #e8e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-header h2 {
+      font-size: 2rem;
+      background: linear-gradient(135deg, #7b61ff, #00e5c0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .page-subtitle {
+      color: #a0a0b8;
+      font-size: 1rem;
+    }
+
+    .citas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ===== TARJETA DE CITA ===== */
+    .cita-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.2rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .cita-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(123, 97, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .cita-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .cita-especialidad {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #7b61ff;
+      background: rgba(123, 97, 255, 0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+    }
+
+    .cita-id {
+      font-size: 0.7rem;
+      color: #6b6b80;
+    }
+
+    .cita-paciente {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e8e8f0;
+      margin-bottom: 0.2rem;
+    }
+
+    .cita-medico {
+      color: #a0a0b8;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .cita-datetime {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: #a0a0b8;
+      margin-bottom: 1rem;
+    }
+
+    .btn-ver {
+      display: inline-block;
+      color: #7b61ff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .btn-ver:hover {
+      color: #00e5c0;
+    }
+
+    .detalle-header {
+      margin-bottom: 2rem;
+    }
+
+    .back-link {
+      color: #7b61ff;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      transition: color 0.3s;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    .back-link:hover {
+      color: #00e5c0;
+    }
+
+    .detalle-header h2 {
+      font-size: 2rem;
+      background: linear-gradient(135deg, #7b61ff, #00e5c0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .detalle-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+
+    .detalle-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .info-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #6b6b80;
+      letter-spacing: 0.05em;
+    }
+
+    .info-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e8e8f0;
+    }
+
+    .detalle-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    .not-found-page {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 60vh;
+      text-align: center;
+    }
+
+    .not-found-content {
+      max-width: 400px;
+    }
+
+    .not-found-icon {
+      font-size: 4rem;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .not-found-content h1 {
+      font-size: 6rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #7b61ff, #00e5c0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+
+    .not-found-content h2 {
+      font-size: 1.5rem;
+      color: #e8e8f0;
+      margin: 0.5rem 0;
+    }
+
+    .not-found-content p {
+      color: #a0a0b8;
+      margin-bottom: 2rem;
+    }
+
+
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1rem;
+      }
+      .nav-links {
+        justify-content: center;
+      }
+      .main-content {
+        padding: 1rem;
+      }
+      .home-page h1 {
+        font-size: 1.8rem;
+      }
+      .citas-grid {
+        grid-template-columns: 1fr;
+      }
+      .detalle-info {
+        grid-template-columns: 1fr;
+      }
+      .detalle-actions {
+        flex-direction: column;
+      }
+      .detalle-actions .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      .home-page h1 {
+        font-size: 1.5rem;
+      }
+      .page-header h2 {
+        font-size: 1.5rem;
+      }
+      .detalle-header h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script>
+    
+
+
+    const citasData = [
+      { id: 1, paciente: 'María González', medico: 'Dr. Pérez', fecha: '2024-12-20', hora: '10:00', especialidad: 'Cardiología', telefono: '555-0101', email: 'maria@email.com' },
+      { id: 2, paciente: 'Juan Martínez', medico: 'Dra. López', fecha: '2024-12-20', hora: '11:30', especialidad: 'Dermatología', telefono: '555-0102', email: 'juan@email.com' },
+      { id: 3, paciente: 'Ana Rodríguez', medico: 'Dr. Sánchez', fecha: '2024-12-21', hora: '09:00', especialidad: 'Pediatría', telefono: '555-0103', email: 'ana@email.com' },
+      { id: 4, paciente: 'Carlos Gómez', medico: 'Dra. Fernández', fecha: '2024-12-21', hora: '15:00', especialidad: 'Traumatología', telefono: '555-0104', email: 'carlos@email.com' },
+      { id: 5, paciente: 'Laura Díaz', medico: 'Dr. Martínez', fecha: '2024-12-22', hora: '12:00', especialidad: 'Oftalmología', telefono: '555-0105', email: 'laura@email.com' },
+    ];
+
+
+    let currentPage = 'home';
+    let selectedId = null;
+
+    
+    
+    function navigateTo(page, id = null) {
+      currentPage = page;
+      selectedId = id;
+      render();
+      let path = '/';
+      if (page === 'citas') path = '/citas';
+      else if (page === 'detalle' && id) path = `/cita/${id}`;
+      else if (page === 'notfound') path = '/404';
+      window.history.pushState({ page, id }, '', path);
+    }
+
+    window.addEventListener('popstate', (e) => {
+      const state = e.state || { page: 'home', id: null };
+      currentPage = state.page || 'home';
+      selectedId = state.id || null;
+      render();
+    });
+
+    
+    
+    
+    function render() {
+      const root = document.getElementById('root');
+      let content = '';
+
+
+
+      const navbar = `
+        <nav class="navbar">
+          <div class="nav-brand">🏥 Gestión de Citas</div>
+          <div class="nav-links">
+            <a onclick="navigateTo('home')" class="${currentPage === 'home' ? 'active' : ''}">Inicio</a>
+            <a onclick="navigateTo('citas')" class="${currentPage === 'citas' ? 'active' : ''}">Ver Citas</a>
+          </div>
+        </nav>
+      `;
+
+
+
+      let mainContent = '';
+      if (currentPage === 'home') mainContent = renderHome();
+      else if (currentPage === 'citas') mainContent = renderCitas();
+      else if (currentPage === 'detalle') mainContent = renderDetalle(selectedId);
+      else mainContent = renderNotFound();
+
+      const footer = `
+        <footer class="footer">
+          <p>© 2024 - Gestión de Citas Médicas</p>
+        </footer>
+      `;
+
+      root.innerHTML = `
+        <div class="app">
+          ${navbar}
+          <main class="main-content">${mainContent}</main>
+          ${footer}
+        </div>
+      `;
+    }
+
+   
+   
+   
+   
+    function renderHome() {
+      return `
+        <div class="home-page">
+          <h1>🏥 Bienvenido a la Gestión de Citas Médicas</h1>
+          <p class="subtitle">Administra tus citas de manera eficiente y organizada</p>
+          <div class="features-grid">
+            <div class="feature-card">
+              <span class="feature-icon">📋</span>
+              <h3>Ver Citas</h3>
+              <p>Consulta todas tus citas médicas en un solo lugar</p>
+              <button onclick="navigateTo('citas')" class="btn btn-primary">Ver Citas</button>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">📅</span>
+              <h3>Detalles de Cita</h3>
+              <p>Accede a información detallada de cada cita</p>
+              <button onclick="navigateTo('detalle', 1)" class="btn btn-secondary">Ver Ejemplo</button>
+            </div>
+            <div class="feature-card">
+              <span class="feature-icon">🔍</span>
+              <h3>Fácil Navegación</h3>
+              <p>Explora y encuentra lo que necesitas rápidamente</p>
+              <button onclick="navigateTo('citas')" class="btn btn-secondary">Explorar</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCitas() {
+      const cards = citasData.map(c => `
+        <div class="cita-card" onclick="navigateTo('detalle', ${c.id})">
+          <div class="cita-card-header">
+            <span class="cita-especialidad">${c.especialidad}</span>
+            <span class="cita-id">#${c.id}</span>
+          </div>
+          <h3 class="cita-paciente">${c.paciente}</h3>
+          <p class="cita-medico">${c.medico}</p>
+          <div class="cita-datetime">
+            <span>📅 ${c.fecha}</span>
+            <span>🕐 ${c.hora}</span>
+          </div>
+          <button onclick="event.stopPropagation(); navigateTo('detalle', ${c.id})" class="btn-ver">
+            Ver Detalles →
+          </button>
+        </div>
+      `).join('');
+
+      return `
+        <div class="citas-page">
+          <div class="page-header">
+            <h2>📋 Lista de Citas Médicas</h2>
+            <p class="page-subtitle">Todas las citas programadas</p>
+          </div>
+          <div class="citas-grid">${cards}</div>
+        </div>
+      `;
+    }
+
+    function renderDetalle(id) {
+      const cita = citasData.find(c => c.id === id);
+      
+      if (!cita) {
+        return `
+          <div class="not-found-page" style="min-height: 300px;">
+            <div class="not-found-content">
+              <span class="not-found-icon">🔍</span>
+              <h1 style="font-size: 3rem;">404</h1>
+              <h2>Cita no encontrada</h2>
+              <p>La cita con ID ${id} no existe</p>
+              <button onclick="navigateTo('citas')" class="btn btn-primary">Volver a Citas</button>
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="detalle-page">
+          <div class="detalle-header">
+            <button onclick="navigateTo('citas')" class="back-link">← Volver a Citas</button>
+            <h2>📄 Detalles de la Cita</h2>
+          </div>
+          <div class="detalle-card">
+            <div class="detalle-info">
+              <div class="info-item">
+                <span class="info-label">ID de Cita</span>
+                <span class="info-value">#${cita.id}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Paciente</span>
+                <span class="info-value">${cita.paciente}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Médico</span>
+                <span class="info-value">${cita.medico}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Especialidad</span>
+                <span class="info-value">${cita.especialidad}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Fecha</span>
+                <span class="info-value">${cita.fecha}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Hora</span>
+                <span class="info-value">${cita.hora}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Teléfono</span>
+                <span class="info-value">${cita.telefono || 'No disponible'}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Email</span>
+                <span class="info-value">${cita.email || 'No disponible'}</span>
+              </div>
+            </div>
+            <div class="detalle-actions">
+              <button class="btn btn-primary">📝 Editar Cita</button>
+              <button class="btn btn-danger">🗑️ Cancelar Cita</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderNotFound() {
+      return `
+        <div class="not-found-page">
+          <div class="not-found-content">
+            <span class="not-found-icon">🔍</span>
+            <h1>404</h1>
+            <h2>Página no encontrada</h2>
+            <p>Lo sentimos, la página que buscas no existe</p>
+            <button onclick="navigateTo('home')" class="btn btn-primary">Volver al Inicio</button>
+          </div>
+        </div>
+      `;
+    }
+
+ 
+
+
+
+    const path = window.location.pathname;
+    if (path.includes('/cita/')) {
+      const id = parseInt(path.split('/cita/')[1]) || 1;
+      currentPage = 'detalle';
+      selectedId = id;
+    } else if (path.includes('/citas')) {
+      currentPage = 'citas';
+    } else if (path.includes('/404')) {
+      currentPage = 'notfound';
+    } else {
+      currentPage = 'home';
+    }
+    render();
+  </script>
+</body>
+</html>
